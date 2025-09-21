@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Invoice {{ invoice.invoice_id }}</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      color: #333;
+      margin: 0;
+      padding: 0;
+    }
+    .invoice-container {
+      max-width: 800px;
+      margin: 20px auto;
+      padding: 20px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+    }
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 30px;
+    }
+    .header img {
+      height: 60px;
+      width: 60px;
+      object-fit: contain;
+    }
+    .header-info {
+      text-align: right;
+      line-height: 1.4;
+    }
+    .header-info strong {
+      font-size: 18px;
+    }
+    h2 {
+      color: #333;
+      margin: 0;
+    }
+    p {
+      margin: 5px 0;
+      color: #666;
+    }
+    .section {
+      margin: 30px 0;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 30px;
+    }
+    table, th, td {
+      border: 1px solid #ddd;
+    }
+    th, td {
+      padding: 12px;
+    }
+    th {
+      background-color: #f8f9fa;
+      text-align: left;
+    }
+    th.qty, td.qty { text-align: center; }
+    th.unit_price, td.unit_price, th.total, td.total { text-align: right; }
+    .total {
+      text-align: right;
+      margin-top: 30px;
+      font-size: 18px;
+      color: #333;
+    }
+  </style>
+</head>
+<body>
+  <div class="invoice-container">
+    <!-- Header -->
+    <div class="header">
+      <div>
+        <img src="{https://hackathon-static-invoice-template.s3.ap-southeast-5.amazonaws.com/logo.svg}" alt="Company Logo">
+      </div>
+      <div class="header-info">
+        <strong>The Great Company</strong><br>
+        12, Hack Road 5,<br>
+        Techville, Cheras,<br>
+        56000, Kuala Lumpur
+      </div>
+    </div>
+
+    <!-- Invoice Info -->
+    <div class="section">
+      <h2>INVOICE #{{ invoice.invoice_id }}</h2>
+      <p>Date: {{ invoice.issue_date }}</p>
+      <p>Status: {{ invoice.status }}</p>
+    </div>
+
+    <!-- Bill To -->
+    <div class="section">
+      <strong>Bill To:</strong>
+      <div style="margin-top: 10px; line-height: 1.4;">
+        <strong>{{ invoice.account.name }}</strong><br>
+        {{ invoice.account.billing_address.street }}<br>
+        {{ invoice.account.billing_address.city }}, {{ invoice.account.billing_address.postal_code }}<br>
+        {{ invoice.account.phone }}
+      </div>
+    </div>
+
+    <!-- Contact -->
+    <div class="section">
+      <strong>Contact:</strong>
+      <div style="margin-top: 10px; line-height: 1.4;">
+        {{ invoice.contact.phone }}<br>
+        {{ invoice.contact.email }}
+      </div>
+    </div>
+
+    <!-- Line Items -->
+    <table>
+      <thead>
+        <tr>
+          <th>Product</th>
+          <th class="qty">Qty</th>
+          <th class="unit_price">Unit Price</th>
+          <th class="total">Total</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for item in invoice.line_items %}
+        <tr>
+          <td>{{ item.product }}</td>
+          <td class="qty">{{ item.qty }}</td>
+          <td class="unit_price">${{ "%.2f"|format(item.unit_price) }}</td>
+          <td class="total">${{ "%.2f"|format(item.total) }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+    <!-- Total -->
+    <div class="total">
+      <strong>Total: ${{ "%.2f"|format(invoice.total_amount) }} {{ invoice.currency }}</strong>
+    </div>
+  </div>
+</body>
+</html>
