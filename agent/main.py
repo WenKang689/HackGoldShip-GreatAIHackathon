@@ -293,43 +293,42 @@ async def get_closed_opportunities():
         
         return {'opportunities': opportunities}
         
-    except Exception as e:
+except Exception as e:
         # Return mock data on error
         return {
             'opportunities': [
                 {
-                    "opportunity_name": "A",
+                    "opportunity_name": "Cloud Transformation Project",
                     "date": "2025-09-15",
                     "status": "Pending"
                 },
                 {
-                    "opportunity_name": "B", 
+                    "opportunity_name": "AI Analytics Deployment",
                     "date": "2025-09-18",
                     "status": "Processing"
                 },
                 {
-                    "opportunity_name": "C", 
+                    "opportunity_name": "Digital Retail Upgrade",
                     "date": "2025-09-20",
                     "status": "Success"
                 },
                 {
-                    "opportunity_name": "D", 
+                    "opportunity_name": "E-Commerce Expansion",
                     "date": "2025-09-21",
                     "status": "Fail"
                 },
                 {
-                    "opportunity_name": "E", 
+                    "opportunity_name": "Smart Manufacturing Pilot",
                     "date": "2025-09-22",
-                    "status": "Overdue"
+                    "status": "Pending"
                 },
                 {
-                    "opportunity_name": "F", 
-                    "date": "2025-09-18",
+                    "opportunity_name": "Automation",
+                    "date": "2025-09-21",
                     "status": "Overdue"
                 }
-                
-            ]
-        }
+            ]
+        }
 
 @app.get("/api/invoices/overdue-recurring")
 async def get_overdue_recurring_invoices():
